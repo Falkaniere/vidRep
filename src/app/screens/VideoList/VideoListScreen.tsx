@@ -8,42 +8,46 @@ import { Video } from '@/app/types/types';
 import VideoCard from '@/app/components/VideoCard';
 import VideoListSkeleton from '@/app/components/VideoListSkeleton';
 
-export default function VideoListScreen() {
+function VideoListScreen() {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, 'VideoList'>>();
   const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true)
     const fetchVideos = async () => {
       try {
         const data = await getVideos(1, 10);
-        setVideos(data);
-        setTimeout(() => setLoading(false), 10000);
+        setVideos(data as Video[]);
       } catch (error) {
         console.error('Erro ao carregar vídeos:', error);
       } finally {
         setLoading(false);
       }
     };
-    fetchVideos();
+
+    setTimeout(() => fetchVideos(), 5000)
   }, []);
 
   const handlePress = (videoId: string) => {
     navigation.navigate('VideoDetail', { videoId });
   };
 
-  if (loading) return <VideoListSkeleton />;
+  if (loading) return <VideoListSkeleton testID="video-list-skeleton" />;
 
   return (
     <FlatList
+      testID="video-list"
       data={videos}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
         <TouchableOpacity onPress={() => handlePress(item.id)}>
-          <VideoCard video={item} category={item?.category} />
+          <VideoCard video={item} category={item?.category} testID="video-card"/>
         </TouchableOpacity>
       )}
     />
   );
 }
+
+export default VideoListScreen

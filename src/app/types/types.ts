@@ -14,7 +14,7 @@ export type Video = {
   id: string;
   title: string;
   created_at: string;
-  category: number;
+  category: Category;
   hls_path: string;
   description?: string;
   thumbnail: string;

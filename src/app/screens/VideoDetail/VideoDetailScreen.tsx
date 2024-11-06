@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, ActivityIndicator } from 'react-native';
+import { View, Text, Button } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '@/app/route';
@@ -29,6 +29,7 @@ const VideoDetailScreen: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true)
     const fetchVideo = async () => {
       try {
         const response = await api.get<Video>(`/videos/${videoId}`);
@@ -45,7 +46,8 @@ const VideoDetailScreen: React.FC = () => {
         setLoading(false);
       }
     };
-    fetchVideo();
+
+    setTimeout(() => fetchVideo(), 5000)
   }, [videoId]);
 
   const handleLike = async () => {
@@ -61,16 +63,39 @@ const VideoDetailScreen: React.FC = () => {
     }
   };
 
-
   if (loading) {
     return (
       <SkeletonPlaceholder>
         <View>
           <View style={{ width: '100%', height: 200, borderRadius: 4 }} />
-          <View style={{ marginTop: 10, marginBottom: 6, height: 20, width: '60%', borderRadius: 4 }} />
-          <View style={{ marginBottom: 6, height: 20, width: '80%', borderRadius: 4 }} />
-          <View style={{ marginBottom: 6, height: 20, width: '40%', borderRadius: 4 }} />
-          <View style={{ height: 20, width: '50%', borderRadius: 4 }} />
+          <View
+            style={{
+              marginTop: 15,
+              height: 25,
+              width: '70%',
+              borderRadius: 4,
+            }}
+          />
+          <View
+            style={{
+              marginTop: 10,
+              height: 20,
+              width: '90%',
+              borderRadius: 4,
+            }}
+          />
+          <View
+            style={{
+              marginTop: 10,
+              height: 20,
+              width: '85%',
+              borderRadius: 4,
+            }}
+          />
+          <View style={{ flexDirection: 'row', marginTop: 15 }}>
+            <View style={{ width: 60, height: 20, borderRadius: 4, marginRight: 15 }} />
+            <View style={{ width: 60, height: 20, borderRadius: 4 }} />
+          </View>
         </View>
       </SkeletonPlaceholder>
     );
@@ -85,7 +110,9 @@ const VideoDetailScreen: React.FC = () => {
           useNativeControls
           shouldPlay
         />
-        <Text style={{ paddingBottom: 5, paddingTop: 10 }}>Título: {video.title}</Text>
+        <Text style={{ paddingBottom: 5, paddingTop: 10 }}>
+          Título: {video.title}
+        </Text>
         <Text style={{ paddingBottom: 5 }}>Descrição: {video.description}</Text>
         <Text style={{ paddingBottom: 5 }}>Visualizações: {video.views}</Text>
         <Text style={{ paddingBottom: 5 }}>Likes: {video.likes}</Text>

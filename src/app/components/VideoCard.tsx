@@ -5,11 +5,12 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 type VideoCardProps = {
   video: Video;
   category: Category | undefined;
+  testID?: string
 };
 
-const VideoCard: React.FC<VideoCardProps> = ({ video, category }) => {
+const VideoCard = ({ video, category, testID }: VideoCardProps) => {
   return (
-    <View style={styles.card}>
+    <View style={styles.card} testID={testID}>
       <Image source={{ uri: video.thumbnail }} style={styles.thumbnail} />
       <View style={styles.infoContainer}>
         <Text style={styles.title}>{video.title}</Text>
